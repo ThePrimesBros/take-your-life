@@ -59,9 +59,38 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    stats         Json?
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    mission       Mission[]
+}
+
+model Mission {
+    id          String   @id @default(cuid())
+    name        String?
+    description String?
+    statPoint   Json?
+    expGain     Int
+    type        String?
+    userId      String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Goal {
+    id       String   @id @default(cuid())
+    name     String
+    type     String
+    question Question[]
+}
+
+model Question {
+    id       String   @id @default(cuid())
+    name     String
+    type     String
+    value    Int
+    goalId   String
+    goal     Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
